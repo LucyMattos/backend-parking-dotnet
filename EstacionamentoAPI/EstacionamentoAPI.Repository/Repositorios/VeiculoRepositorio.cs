@@ -15,8 +15,7 @@ namespace EstacionamentoAPI.Repository.Repositorios
 
         public async Task<Veiculo> GetAsync(int id)
         {
-           var data = await _context.Veiculos.Where(v => v.Id == id && !v.Excluido).FirstOrDefaultAsync();  
-            return data;
+            return await _context.Veiculos.Where(v => v.Id == id && !v.Excluido).FirstOrDefaultAsync();
         }
     }
 }

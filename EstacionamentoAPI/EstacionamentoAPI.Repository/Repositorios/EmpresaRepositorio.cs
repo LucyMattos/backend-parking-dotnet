@@ -12,5 +12,15 @@ namespace EstacionamentoAPI.Repository.Repositorios
         {
             _context = context;
         }
+
+        public async Task<List<Empresa>> GetAll()
+        {
+            return await _context.Empresas.Where(e => !e.Excluido).Include(e => e.Veiculos).ToListAsync();
+        }
+
+        public async Task<Empresa> GetAsync(int id)
+        {
+            return await _context.Empresas.Where(e => e.Id == id && !e.Excluido).Include(v => v.Veiculos).FirstOrDefaultAsync();
+        }
     }
 }
