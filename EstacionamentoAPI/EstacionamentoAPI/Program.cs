@@ -1,6 +1,22 @@
+using EstacionamentoAPI.Repository.Contexto;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var connectionString = builder.Configuration.GetConnectionString("EstacionamentoDB");
+builder.Services.AddDbContext<EstacionamentoContext>(options =>
+{
+    options.EnableSensitiveDataLogging(true);
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), opt =>
+    {
+
+        opt.MigrationsAssembly("EstacionamentoAPI.Repository");
+        opt.MigrationsHistoryTable("Migrations", "Configuration");
+    });
+}, ServiceLifetime.Transient);
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
