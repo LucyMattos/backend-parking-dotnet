@@ -46,7 +46,7 @@ namespace EstacionamentoAPI.Repository.Mapeamento
               .IsRequired();
 
             builder.Property(p => p.ExcluidoEm)
-             .HasDefaultValueSql("GETUTCDATE()");
+                .IsRequired(false);
 
             builder.HasMany(p => p.Veiculos)
              .WithOne(p => p.Empresa)

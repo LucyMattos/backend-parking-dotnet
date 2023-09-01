@@ -13,6 +13,7 @@ namespace EstacionamentoAPI.Repository.Contexto
         public EstacionamentoContext(DbContextOptions<EstacionamentoContext> options)
            : base(options)
         {
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public DbSet<Empresa> Empresas { get; set; }
@@ -29,11 +30,11 @@ namespace EstacionamentoAPI.Repository.Contexto
                     var property = entityEntry.Properties.FirstOrDefault(p => p.Metadata.Name == "DataCriacao");
                     if (property != null)
                         entityEntry.Property("DataCriacao").CurrentValue = DateTimeOffset.UtcNow;
+                    
                     property = entityEntry.Properties.FirstOrDefault(p => p.Metadata.Name == "Excluido");
                     if (property != null)
                     {
                         entityEntry.Property("Excluido").CurrentValue = false;
-                        entityEntry.Property("ExcluidoEm").CurrentValue = DateTimeOffset.UtcNow;
                     }
                 }
 
