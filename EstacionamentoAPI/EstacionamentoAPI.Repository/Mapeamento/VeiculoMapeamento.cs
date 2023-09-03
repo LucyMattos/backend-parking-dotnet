@@ -38,15 +38,18 @@ namespace EstacionamentoAPI.Repository.Mapeamento
                .IsRequired();
 
             builder.Property(p => p.Tipo)
-               .HasColumnType("VARCHAR(20)")
+               .HasColumnType("INT")
                .IsRequired();
 
-            builder.Property(p => p.DataCriacao)
+            builder.Property(p => p.DataEntrada)
               .HasDefaultValueSql("GETUTCDATE()")
               .IsRequired();
 
+            builder.Property(p => p.DataSaida)
+             .IsRequired(false);
+
             builder.Property(p => p.ExcluidoEm)
-             .HasDefaultValueSql("GETUTCDATE()");
+              .IsRequired(false);
 
             builder.Property(p => p.UltimaAtualizacao).IsRequired(false);
             builder.Property(p => p.Excluido).IsRequired(true).HasDefaultValue(false);

@@ -16,11 +16,12 @@ namespace EstacionamentoAPI.Repository.Repositorios
 
         public virtual async Task<T> AddAsync(T entity, bool saveChanges = true)
         {
-            var entryTrack = await _context.Set<T>().AddAsync(entity);
+             var entryTrack = await _context.Set<T>().AddAsync(entity);
             if (saveChanges)
                 await _context.SaveChangesAsync();
             return entryTrack.Entity;
         }
+       
         public virtual async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entity, bool saveChanges = true)
         {
             await _context.Set<T>().AddRangeAsync(entity.ToArray());

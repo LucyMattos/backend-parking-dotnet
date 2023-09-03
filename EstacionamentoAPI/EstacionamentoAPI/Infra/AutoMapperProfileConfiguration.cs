@@ -14,7 +14,13 @@ namespace EstacionamentoAPI.Infra
             CreateMap<Domain.ViewModel.UpEmpresa, Domain.Entidades.Empresa>().ReverseMap();
             CreateMap<Domain.DTO.VeiculoDTO, Domain.Entidades.Veiculo>().ReverseMap();
             CreateMap<Domain.DTO.VeiculoDTO, Domain.ViewModel.AddVeiculo>().ReverseMap();
-            CreateMap<Domain.Entidades.Veiculo, Domain.ViewModel.AddVeiculo>().ReverseMap();
+            CreateMap<Domain.Entidades.Veiculo, Domain.ViewModel.AddVeiculo>()
+                .ForMember(destination => destination.TipoVeiculoEnum, config => config.MapFrom(source => source.Tipo));
+
+
+            CreateMap<Domain.ViewModel.AddVeiculo, Domain.Entidades.Veiculo>()
+               .ForMember(destination => destination.Tipo, config => config.MapFrom(source => source.TipoVeiculoEnum));
+
             CreateMap<Domain.DTO.VeiculoDTO, Domain.ViewModel.UpVeiculo>().ReverseMap();
             CreateMap<Domain.ViewModel.UpVeiculo, Domain.Entidades.Veiculo>().ReverseMap();
 

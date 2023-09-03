@@ -1,7 +1,9 @@
 ﻿using EstacionamentoAPI.Domain.Entidades;
+using EstacionamentoAPI.Domain.Enum;
 using EstacionamentoAPI.Repository.Mapeamento;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EstacionamentoAPI.Repository.Contexto
 {
@@ -49,7 +51,7 @@ namespace EstacionamentoAPI.Repository.Contexto
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        {           
             modelBuilder.ApplyConfiguration(new EmpresaMapeamento());
             modelBuilder.ApplyConfiguration(new VeiculoMapeamento());
         }

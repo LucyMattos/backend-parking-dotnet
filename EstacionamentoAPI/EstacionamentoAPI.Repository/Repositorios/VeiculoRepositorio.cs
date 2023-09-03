@@ -18,9 +18,9 @@ namespace EstacionamentoAPI.Repository.Repositorios
             return await _context.Veiculos.Where(e => !e.Excluido).Include(e => e.Empresa).ToListAsync();
         }
 
-        public async Task<Veiculo> GetAsync(int id)
+        public async Task<Veiculo> GetAsync(int id, int empresaId)
         {
-            return await _context.Veiculos.Where(v => v.Id == id && !v.Excluido).FirstOrDefaultAsync();
+            return await _context.Veiculos.Where(v => v.Id == id  && v.EmpresaId == empresaId && !v.Excluido).FirstOrDefaultAsync();
         }
     }
 }

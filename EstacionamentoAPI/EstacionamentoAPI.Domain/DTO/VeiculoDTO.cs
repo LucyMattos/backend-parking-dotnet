@@ -1,4 +1,4 @@
-﻿using EstacionamentoAPI.Domain.Entidades;
+﻿using EstacionamentoAPI.Domain.Enum;
 
 namespace EstacionamentoAPI.Domain.DTO
 {
@@ -9,7 +9,8 @@ namespace EstacionamentoAPI.Domain.DTO
         public string Modelo { get; set; }
         public string Cor { get; set; }
         public string Placa { get; set; }
-        public string Tipo { get; set; }
-        public Empresa Empresa { get; set; }
+        public DateTime DataEntrada { get; set; }
+        public DateTime? DataSaida { get; set; }
+        public TipoVeiculoEnum Tipo { get; set; }
     }
 }

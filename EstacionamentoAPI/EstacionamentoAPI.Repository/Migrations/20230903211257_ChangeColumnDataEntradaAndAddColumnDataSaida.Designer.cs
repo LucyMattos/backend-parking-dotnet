@@ -4,6 +4,7 @@ using EstacionamentoAPI.Repository.Contexto;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EstacionamentoAPI.Repository.Migrations
 {
     [DbContext(typeof(EstacionamentoContext))]
-    partial class EstacionamentoContextModelSnapshot : ModelSnapshot
+    [Migration("20230903211257_ChangeColumnDataEntradaAndAddColumnDataSaida")]
+    partial class ChangeColumnDataEntradaAndAddColumnDataSaida
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,7 +98,7 @@ namespace EstacionamentoAPI.Repository.Migrations
                         .HasColumnType("datetime2")
                         .HasDefaultValueSql("GETUTCDATE()");
 
-                    b.Property<DateTime?>("DataSaida")
+                    b.Property<DateTime>("DataSaida")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EmpresaId")
