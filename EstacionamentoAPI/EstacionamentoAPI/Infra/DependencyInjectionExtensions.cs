@@ -21,6 +21,7 @@ namespace EstacionamentoAPI.Infra
         {
             services.AddTransient<IVeiculoServico, VeiculoServico>();
             services.AddTransient<IEmpresaServico, EmpresaServico>();
+            services.AddScoped<INotificationService, NotificationService>();
         }
 
         private static void AddRepositories(this IServiceCollection services)

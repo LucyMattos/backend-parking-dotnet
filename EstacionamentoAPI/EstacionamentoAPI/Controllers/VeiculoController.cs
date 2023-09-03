@@ -14,19 +14,21 @@ namespace EstacionamentoAPI.Controllers
     public class VeiculoController : ControllerBase
     {
         private readonly IVeiculoServico _veiculoServico;
+        private readonly INotificationService _notificationService;
 
-        public VeiculoController(IVeiculoServico veiculoServico)
+        public VeiculoController(IVeiculoServico veiculoServico, INotificationService notificationService)
         {
             _veiculoServico = veiculoServico;
+            _notificationService = notificationService;
         }
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(VeiculoDTO))]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(void))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string[]))]
-        public async Task<ActionResult<VeiculoDTO>> Get(int id) 
+        public async Task<ActionResult<VeiculoDTO>> Get(int id, int empresaId) 
         {
-            var data = await _veiculoServico.GetAsync(id).ConfigureAwait(false);
+            var data = await _veiculoServico.GetAsync(id,empresaId).ConfigureAwait(false);
             
             if(data == null )
                 return NoContent();
@@ -56,7 +58,25 @@ namespace EstacionamentoAPI.Controllers
         {
             var data = await _veiculoServico.AddAsync(vm).ConfigureAwait(false);
 
+            if (_notificationService.HasErrors)
+                return BadRequest(_notificationService.Notification.Errors);
+
             return Ok(data);
+        }
+
+
+        [HttpPut("Saida")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(void))]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(void))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string[]))]
+        public async Task<ActionResult> ParkingExitAsync(int empresaId, int veiculoId)
+        {
+             await _veiculoServico.ParkingExitAsync(empresaId, veiculoId).ConfigureAwait(false);
+
+            if (_notificationService.HasErrors)
+                return BadRequest(_notificationService.Notification.Errors);
+
+            return Ok();
         }
 
         [HttpPut()]
@@ -74,9 +94,9 @@ namespace EstacionamentoAPI.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(void))]
         [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(void))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string[]))]
-        public async Task<ActionResult> DeleteAsync(int id)
+        public async Task<ActionResult> DeleteAsync(int id, int empresaId)
         {
-            await _veiculoServico.DeleteAsync(id).ConfigureAwait(false);
+            await _veiculoServico.DeleteAsync(id, empresaId).ConfigureAwait(false);
             return Ok();
         }
     }
