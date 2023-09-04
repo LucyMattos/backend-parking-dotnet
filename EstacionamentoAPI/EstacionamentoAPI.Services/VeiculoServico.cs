@@ -36,7 +36,7 @@ namespace EstacionamentoAPI.Services
 
         public async Task<VeiculoDTO> AddAsync(AddVeiculo vm)
         {
-            var empresa = await _empresaRepositorio.GetAsync(vm.EmpresaId);
+            var empresa = await _empresaRepositorio.GetAsync(vm.EmpresaId.Value);
 
             if (empresa == null)
             {
@@ -72,7 +72,7 @@ namespace EstacionamentoAPI.Services
 
         public async Task UpdateAsync(UpVeiculo dto)
         {
-            var data = await _veiculoRepositorio.GetAsync(dto.Id, dto.EmpresaId);
+            var data = await _veiculoRepositorio.GetAsync(dto.Id.Value, dto.EmpresaId.Value);
 
             if (data != null)
             {
@@ -80,6 +80,24 @@ namespace EstacionamentoAPI.Services
                 await _veiculoRepositorio.UpdateAsync(_mapper.Map<Veiculo>(up));
             }
         }
+
+        public async Task ParkingExitAsync(int empresaId, int veiculoId)
+        {
+            var data = await _veiculoRepositorio.GetAsync(veiculoId, empresaId);
+
+            if (data == null)
+                _notificationService.Notification.Errors.Add("Veículo não encontrado");
+
+            if (_notificationService.HasErrors) return;
+
+            if (data != null)
+            {
+                var dto = _mapper.Map<VeiculoDTO>(data);
+                dto.DataSaida = DateTime.Now;
+                await _veiculoRepositorio.UpdateAsync(_mapper.Map<Veiculo>(dto));
+            }
+        }
+
         public async Task DeleteAsync(int id, int empresaId)
         {
             var data = await _veiculoRepositorio.GetAsync(id, empresaId);
@@ -94,22 +112,6 @@ namespace EstacionamentoAPI.Services
                 var dto = _mapper.Map<VeiculoDTO>(data);
                 dto.ExcluidoEm = DateTime.Now;
                 dto.Excluido = true;
-                await _veiculoRepositorio.UpdateAsync(_mapper.Map<Veiculo>(dto));
-            }
-        }
-        public async Task ParkingExitAsync(int empresaId, int veiculoId)
-        {
-            var data = await _veiculoRepositorio.GetAsync(veiculoId, empresaId);
-
-            if (data == null)
-                _notificationService.Notification.Errors.Add("Veículo não encontrado");
-
-            if (_notificationService.HasErrors) return;
-
-            if (data != null)
-            {
-                var dto = _mapper.Map<VeiculoDTO>(data);
-                dto.DataSaida = DateTime.Now;
                 await _veiculoRepositorio.UpdateAsync(_mapper.Map<Veiculo>(dto));
             }
         }

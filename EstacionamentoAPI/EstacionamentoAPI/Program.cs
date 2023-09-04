@@ -1,6 +1,10 @@
+using EstacionamentoAPI.Domain.Validacoes;
 using EstacionamentoAPI.Infra;
 using EstacionamentoAPI.Repository.Contexto;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,33 +20,55 @@ builder.Services.AddDbContext<EstacionamentoContext>(options =>
     });
 }, ServiceLifetime.Transient);
 
+builder.Services.AddMvc()
+                    .ConfigureEstacionamentoApiBehavior()
+                    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<EmpresaValidador>());
+
 builder.Services.AddDIServices();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddAutoMapper(typeof(AutoMapperProfileConfiguration));
-builder.Services.AddControllersWithViews()
-    .AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
+builder.Services.AddSwaggerGen(c =>
+{ 
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "EstacionamentoAPI",
+        Version = "v1",
+        Description = "API REST desenvolvida em .NET 6  para gerenciar um estacionamento de carros e motos.",
+        Contact = new OpenApiContact
+        {
+            Name = "Lucy Nascimento Mattos",
+            Email = "lucymattos32@hotmail.com",
+            Url = new Uri("https://www.linkedin.com/in/lucymattos/")
+        }
 
-builder.Services.AddControllers().AddJsonOptions(x =>
-{
-    // serialize enums as strings in api responses (e.g. Role)
-    x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+    c.EnableAnnotations();
 });
 
-var app = builder.Build();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfileConfiguration));
+    builder.Services.AddControllersWithViews()
+        .AddNewtonsoftJson(options =>
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+    );
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    builder.Services.AddControllers().AddJsonOptions(x =>
+    {
+        // serialize enums as strings in api responses (e.g. Role)
+        x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
-app.UseCoreCors();
-app.UseHttpsRedirection();
+    var app = builder.Build();
 
-app.MapControllers();
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
 
-app.Run();
+    //app.UseEstacionamentoApiKey();
+    app.UseCoreCors();
+    app.UseHttpsRedirection();
+
+    app.MapControllers();
+
+    app.Run();

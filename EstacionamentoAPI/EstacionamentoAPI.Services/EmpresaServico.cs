@@ -11,11 +11,13 @@ namespace EstacionamentoAPI.Services
     {
         private readonly IEmpresaRepositorio _empresaRepositorio;
         private readonly IMapper _mapper;
+        private readonly INotificationService _notificationService;
 
-        public EmpresaServico(IEmpresaRepositorio empresaRepositorio, IMapper mapper)
+        public EmpresaServico(IEmpresaRepositorio empresaRepositorio, IMapper mapper, INotificationService notificationService)
         {
             _empresaRepositorio = empresaRepositorio;
             _mapper = mapper;
+            _notificationService = notificationService;
         }
 
         public async Task<EmpresaDTO> AddAsync(AddEmpresa vm)
@@ -36,6 +38,10 @@ namespace EstacionamentoAPI.Services
                 dto.ExcluidoEm = DateTime.Now;
                 dto.Excluido = true;
                 await _empresaRepositorio.UpdateAsync(_mapper.Map<Empresa>(dto));
+            }
+            else
+            {
+                _notificationService.Notification.Errors.Add("Empresa não encontrada");
             }
         }
 
@@ -59,12 +65,16 @@ namespace EstacionamentoAPI.Services
 
         public async Task UpdateAsync(UpEmpresa dto)
         {
-            var data = await _empresaRepositorio.GetAsync(dto.Id);
+            var data = await _empresaRepositorio.GetAsync(dto.Id.Value);
 
             if (data != null)
             {
                 var up = _mapper.Map(dto, data);
                 await _empresaRepositorio.UpdateAsync(_mapper.Map<Empresa>(up));
+            }
+            else
+            {
+                _notificationService.Notification.Errors.Add("Empresa não encontrada");
             }
         }
     }
