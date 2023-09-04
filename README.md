@@ -20,11 +20,11 @@ O **EstacionamentoAPI** é uma API REST desenvolvida em .NET 6 para gerenciar um
 
 ## Configurando o ambiente
 
- 1- Clonar o reposiório para sua máquina;
- 2- Conectar com o banco de dados SQL Server:
+ - Clonar o reposiório para sua máquina;
+ - Conectar com o banco de dados SQL Server:
     - Crie um banco de dados com o nome de "EstacionamentoDB"
     - No Visual Studio, no terminal Package Manager Console utilize o comando "update-database" executar as migrations do projeto e atualizar no banco de dados. 
- 4- Para finalizar, no Visual Studio execute a aplicação utilizando a tecla F5 do teclado.
+ - Para finalizar, no Visual Studio execute a aplicação utilizando a tecla F5 do teclado.
 
 ## Considerações sobre a aplicação:
 
