@@ -1,58 +1,34 @@
-### FCamara 🚀
-*"Somos um ecossistema de tecnologia e inovação que potencializa o futuro de negócios, integrando visão estratégica com execução inteligente, lado a lado com nossos clientes, para proporcionar experiências transformadoras."*
+## Introdução
 
-Conheça a [FCamara](https://fcamara.com/conheca-a-fcamara/)
+O **EstacionamentoAPI** é uma API REST desenvolvida em .NET 6 para gerenciar um estacionamento de carros e motos através de CRUD.
 
-## Teste para vaga de Desenvolvimento Back-end .NET
-Criar uma API REST para gerenciar um estacionamento de carros e motos.
+## Tecnologias utilizadas
 
-## Funcionalidades 🛠️
+- .NET 6
+- Entity Framework Core
+- AutoMapper
+- Injeção de dependência
+- Notification Pattern
+- Swagger
+- Postman
 
-   - **Estabelecimento:** CRUD;
+## Pré requisitos
 
-      Criar um cadastro da empresa com os seguintes campos:
-      - Nome;
-      - CNPJ;
-      - Endereço;
-      - Telefone;
-      - Quantidade de vagas para motos;
-      - Quantidade de vagas para carros.
-      
-      **Todos** os campos são de preenchimento obrigatório.
+- IDE Visual Studio (Recomendado) ou uma IDE ou editor de código fonte de sua preferência;
+- Entity Framework Core;
+- Banco de dados SQL Server instalado na máquina;
 
-   - **Veículos:** CRUD;
+## Configurando o ambiente
 
-      Criar um cadastro de veículos com os seguintes campos:
-      - Marca;
-      - Modelo;
-      - Cor;
-      - Placa;
-      - Tipo.
+ 1- Clonar o reposiório para sua máquina;
+ 2- Conectar com o banco de dados SQL Server:
+    - Crie um banco de dados com o nome de "EstacionamentoDB"
+    - No Visual Studio, no terminal Package Manager Console utilize o comando "update-database" executar as migrations do projeto e atualizar no banco de dados. 
+ 4- Para finalizar, no Visual Studio execute a aplicação utilizando a tecla F5 do teclado.
 
-      **Todos** os campos são de preenchimento obrigatório.
+## Considerações sobre a aplicação:
 
-   - **Controle de entrada e saída de veículos.**
+- Para realizar as chamadas aos endpoints é necessário autenticar-se atráves de API Key. Para isso basta utilizar o Postman e enviar a chave no header de cada requisição. Na aplicação, a chave "EstacionamentoApiKey" encontra-se no arquivo "appsettings.Development.json", dentro da camada principal "EstacionamentoAPI".
+Feito isso basta inserir chave e valor no header de cada requisição junto com os demais parâmetros necessários para realizar a chamada à API. Para consultar os endpoints consulte a documentação no Swagger.
 
-## Requisitos 💻
-   - A aplicação deverá ser desenvolvida usando .NET a partir da versão 5+;
-   - Modelagem de dados pode ser no banco de dados de sua preferência, podendo ser um banco relacional ou não relacional (mongodb, SQL Server, PostgreSQL, MySQL, etc);
-   - Persistência de dados no banco deverá ser feita utilizando o Entity Framework Core;
-   - O retorno da API deverá ser em formato JSON;
-   - Utilizar as requisições GET, POST, PUT ou DELETE, conforme a melhor prática;   
-   - Criar o README do projeto descrevendo as tecnologias utilizadas, chamadas dos serviços e configurações necessário para executar a aplicação.
-   
-## Pontos Extras ⭐
-   - Desenvolvimento baseado em TDD;
-   - Práticas de modelagem de projeto;
-   - Criar e configurar o Swagger da API de acordo com as melhores práticas;
-   - Criar uma API para extração de relatórios da aplicação com as seguintes informações:
-      - Sumário da quantidade de entrada e saída;
-      - Sumário da quantidade de entrada e saída de veículos por hora;
-   - Criar uma solução de autenticação;
-   - Publicação da aplicação em algum servidor.
-
-## Submissão do teste 📝
-Crie um fork do teste para acompanharmos o seu desenvolvimento através dos seus commits.
-
-## Obrigado!
-Agradecemos sua participação no teste. Boa sorte! 😄
+- Na API Veículo, no request body dos endpoints de POST e PUT de veículo, os campos "tipo": "string" e "tipoVeiculoEnum": "Carro" referem-se ao tipo do veículo,Carro ou Moto. Há apenas estes dois tipos de veículo na aplicação. No banco de dados o campo "Tipo" aparece como Carro = 0 ou  Moto = 1 ; 
