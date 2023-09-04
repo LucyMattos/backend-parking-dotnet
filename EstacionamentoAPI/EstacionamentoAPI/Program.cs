@@ -65,7 +65,7 @@ builder.Services.AddAutoMapper(typeof(AutoMapperProfileConfiguration));
         app.UseSwaggerUI();
     }
 
-    //app.UseEstacionamentoApiKey();
+    app.UseEstacionamentoApiKey();
     app.UseCoreCors();
     app.UseHttpsRedirection();
 
