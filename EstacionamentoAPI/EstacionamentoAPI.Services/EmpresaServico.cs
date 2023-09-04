@@ -51,6 +51,12 @@ namespace EstacionamentoAPI.Services
             return _mapper.Map<EmpresaDTO>(data);
         }
 
+        public async Task<EmpresaDTO> GetRegister(int empresaId, DateTime dataEntrada, DateTime dataSaida)
+        {
+            var data = await _empresaRepositorio.GetRegister(empresaId, dataEntrada, dataSaida);
+            return _mapper.Map<EmpresaDTO>(data);
+        }
+
         public async Task UpdateAsync(UpEmpresa dto)
         {
             var data = await _empresaRepositorio.GetAsync(dto.Id);

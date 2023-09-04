@@ -10,5 +10,6 @@ namespace EstacionamentoAPI.Services.Contratos
         Task<EmpresaDTO> AddAsync(AddEmpresa vm);
         Task UpdateAsync(UpEmpresa dto);
         Task DeleteAsync(int id);
+        Task<EmpresaDTO> GetRegister(int empresaId, DateTime dataEntrada, DateTime dataSaida);
     }
 }

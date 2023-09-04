@@ -22,5 +22,11 @@ namespace EstacionamentoAPI.Repository.Repositorios
         {
             return await _context.Empresas.Where(e => e.Id == id && !e.Excluido).Include(v => v.Veiculos).FirstOrDefaultAsync();
         }
+
+        public async Task<Empresa> GetRegister(int empresaId, DateTime dataEntrada, DateTime dataSaida)
+        {
+            return await _context.Empresas.Where(e => e.Id == empresaId && !e.Excluido)
+                                          .Include(v => v.Veiculos.Where(x=> x.DataEntrada >= dataEntrada && x.DataSaida <= dataSaida && !x.Excluido)).FirstOrDefaultAsync();
+        }
     }
 }
