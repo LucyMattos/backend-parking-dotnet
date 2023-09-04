@@ -74,11 +74,13 @@ namespace EstacionamentoAPI.Services
         {
             var data = await _veiculoRepositorio.GetAsync(dto.Id.Value, dto.EmpresaId.Value);
 
-            if (data != null)
-            {
-                var up = _mapper.Map(dto, data);
-                await _veiculoRepositorio.UpdateAsync(_mapper.Map<Veiculo>(up));
-            }
+            if (data == null)
+                _notificationService.Notification.Errors.Add("Veículo não encontrado");
+
+            if (_notificationService.HasErrors) return;
+
+            var up = _mapper.Map(dto, data);
+            await _veiculoRepositorio.UpdateAsync(_mapper.Map<Veiculo>(up));
         }
 
         public async Task ParkingExitAsync(int empresaId, int veiculoId)
@@ -107,13 +109,10 @@ namespace EstacionamentoAPI.Services
 
             if (_notificationService.HasErrors) return;
 
-            if (data != null)
-            {
-                var dto = _mapper.Map<VeiculoDTO>(data);
-                dto.ExcluidoEm = DateTime.Now;
-                dto.Excluido = true;
-                await _veiculoRepositorio.UpdateAsync(_mapper.Map<Veiculo>(dto));
-            }
+            var dto = _mapper.Map<VeiculoDTO>(data);
+            dto.ExcluidoEm = DateTime.Now;
+            dto.Excluido = true;
+            await _veiculoRepositorio.UpdateAsync(_mapper.Map<Veiculo>(dto));
         }
     }
 }

@@ -22,7 +22,7 @@ namespace EstacionamentoAPI.Controllers
             _notificationService = notificationService;
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}/{empresaId:int}")]
         [SwaggerOperation(
           Summary = "Buscar veículo pelo Id",
           Description = "Busca o veículo ativo pelo Id."
@@ -120,6 +120,9 @@ namespace EstacionamentoAPI.Controllers
         {
             await _veiculoServico.UpdateAsync(vm).ConfigureAwait(false);
 
+            if (_notificationService.HasErrors)
+                return BadRequest(_notificationService.Notification.Errors);
+
             return Ok();
         }
 
@@ -136,6 +139,10 @@ namespace EstacionamentoAPI.Controllers
         public async Task<ActionResult> DeleteAsync(int id, int empresaId)
         {
             await _veiculoServico.DeleteAsync(id, empresaId).ConfigureAwait(false);
+
+            if (_notificationService.HasErrors)
+                return BadRequest(_notificationService.Notification.Errors);
+
             return Ok();
         }
     }
